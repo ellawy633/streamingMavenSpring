@@ -12,8 +12,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import streaming.dao.FilmDAO;
-import streaming.entity.Film;
+
+import streaming.entity.Personne;
+import streaming.service.PersonneServiceCRUD;
 import streaming.spring.SpringConfig;
 
 /**
@@ -22,22 +23,43 @@ import streaming.spring.SpringConfig;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SpringConfig.class)
-
-public class FilmDAOTest {
+public class PersonneServiceCRUDTest {
 
     @Autowired
-    private FilmDAO dao;
+    private PersonneServiceCRUD service;
 
     @Before
     public void avant() {
-        dao.deleteAll();
+        service.deleteAll();
+        Personne p = new Personne();
+        p.setNom("aaa");
+        p.setPrenom("bbbb");
+        service.save(p);
+        
+        p=new Personne();
+        p.setNom("ccc");
+        p.setPrenom("ddd");
+        service.save(p);
     }
 
     @Test
-    public void testSupprimerTest() {
-        dao.save(new Film());
-        dao.save(new Film());
+    public void testfin() {
 
+        service.findOneByPrenomAndNom("aaa", "bbb");
+       
     }
 
+    @Test
+    public void test1() {
+
+        Personne per = new Personne();
+        per.setNom("FRANCSOIS");
+        service.save(per);
+    }
+
+    @Test
+    public void test2() {
+
+        service.findAll();
+    }
 }

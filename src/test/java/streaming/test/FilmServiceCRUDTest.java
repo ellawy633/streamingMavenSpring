@@ -5,35 +5,39 @@
  */
 package streaming.test;
 
-import streaming.spring.SpringConfig;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-import streaming.dao.PaysDAO;
 import streaming.entity.Film;
-import streaming.entity.Pays;
+import streaming.service.FilmServiceCRUD;
+import streaming.spring.SpringConfig;
 
 /**
  *
- * @author ETY
+ * @author admin
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SpringConfig.class)
-public class PaysDAOTest {
-    
+
+public class FilmServiceCRUDTest {
+
     @Autowired
-    private PaysDAO dao;
-    
-    @Test
-    public void test1() {
-        
-        Pays p= new Pays();
-        p.setNom("FRANCE");
-        dao.ajouter(p);
+    private FilmServiceCRUD dao;
+
+    @Before
+    public void avant() {
+        dao.deleteAll();
     }
+
+    @Test
+    public void testSupprimerTest() {
+        dao.save(new Film());
+        dao.save(new Film());
+
+    }
+
 }

@@ -5,38 +5,36 @@
  */
 package streaming.test;
 
+import streaming.spring.SpringConfig;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import streaming.dao.PersonneDAO;
-import streaming.entity.Personne;
-import streaming.spring.SpringConfig;
+import org.springframework.transaction.annotation.Transactional;
+
+import streaming.entity.Film;
+import streaming.entity.Pays;
+import streaming.service.PaysServiceCRUD;
 
 /**
  *
- * @author admin
+ * @author ETY
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SpringConfig.class)
-public class PersonneDAOTest {
-
+public class PaysServiceCRUDTest {
+    
     @Autowired
-    private PersonneDAO dao;
-
+    private PaysServiceCRUD dao;
+    
     @Test
     public void test1() {
-
-        Personne per = new Personne();
-        per.setNom("FRANCSOIS");
-        dao.ajouter(per);
-    }
-
-    @Test
-    public void test2() {
-
-        dao.listertous();
+        
+        Pays p= new Pays();
+        p.setNom("FRANCE");
+       dao.save(p);
     }
 }
