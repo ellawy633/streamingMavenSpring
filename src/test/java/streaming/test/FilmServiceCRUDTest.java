@@ -5,6 +5,17 @@
  */
 package streaming.test;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlProducer;
+import org.dbunit.operation.DatabaseOperation;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -12,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.xml.sax.InputSource;
 import streaming.entity.Film;
 import streaming.service.FilmServiceCRUD;
 import streaming.spring.SpringConfig;
@@ -28,15 +40,23 @@ public class FilmServiceCRUDTest {
     @Autowired
     private FilmServiceCRUD dao;
 
-    @Before
-    public void avant() {
-        dao.deleteAll();
+    //@Before
+    public void avant() throws ClassNotFoundException, SQLException, DatabaseUnitException, FileNotFoundException {
+        // Connexion DB
+        Class driverClass = Class.forName("org.apache.derby.jdbc.ClientDriver");
+        Connection jdbcConnection = DriverManager.getConnection(
+                "jdbc:derby://localhost:1527/sample", "app", "app");
+        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+
+        // Import
+        FlatXmlDataSet dataSet = new FlatXmlDataSet(new FlatXmlProducer(new InputSource(new FileInputStream("donnees.xml"))));
+        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
     }
 
+   
+
     @Test
-    public void testSupprimerTest() {
-        dao.save(new Film());
-        dao.save(new Film());
+    public void test() {
 
     }
 
